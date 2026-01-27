@@ -1,6 +1,6 @@
 import GameObject from "./gameElements/gameObject.js";
-import Position from "./gameElements/position.js";
 import { GAMEHEIGHT, GAMEWIDTH } from "./global.js";
+import player from "./player.js";
 import { sprites } from "./sprites.js";
 
 // Holds the current state of the game at any given time
@@ -11,10 +11,7 @@ export class GameState {
       width: GAMEWIDTH,
       height: GAMEHEIGHT,
     }),
-    new GameObject({
-      sprite: sprites.jess,
-      pos: new Position(48, 58),
-    }),
+    player,
   ];
 }
 

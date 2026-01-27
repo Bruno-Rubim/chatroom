@@ -6,6 +6,10 @@ export const TILESIZE = 32;
 
 export const RIGHT = "right";
 export const LEFT = "left";
+export const UP = "up";
+export const DOWN = "down";
+export type direction = typeof RIGHT | typeof LEFT | typeof UP | typeof DOWN;
+
 export const CENTER = "center";
 
 export const DEV = localStorage.getItem("is_dev") == "true";

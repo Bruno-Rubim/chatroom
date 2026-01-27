@@ -76,9 +76,15 @@ export default class CanvasManager {
    * @param pos
    * @param width
    * @param height
+   * @param flip
    */
-  renderSprite(sprite: Sprite, pos: Position, width: number, height: number) {
-    utils.logOnce([sprite, pos, width, height]);
+  renderSprite(
+    sprite: Sprite,
+    pos: Position,
+    width: number,
+    height: number,
+    flip: boolean = false,
+  ) {
     this.ctx.drawImage(
       sprite.img,
       Math.floor(pos.x * this.renderScale),

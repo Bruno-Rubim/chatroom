@@ -4,6 +4,8 @@ import type GameObject from "./gameElements/gameObject.js";
 import { timerManager } from "./timer/timerManager.js";
 import { bindListeners, inputState } from "./input/inputState.js";
 import gameState from "./gameState.js";
+import player from "./player.js";
+import { DOWN, LEFT, RIGHT, UP } from "./global.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 type actionResponse = "cursorChange" | "itemDescription" | void;
@@ -53,7 +55,32 @@ export default class GameManager {
    * Checks if specific keys are held and
    * @returns
    */
-  handleKeyInput() {}
+  handleKeyInput() {
+    if (
+      inputState.keyboard.ArrowRight == "pressed" ||
+      inputState.keyboard.d == "pressed"
+    ) {
+      player.moveNotch(RIGHT);
+    }
+    if (
+      inputState.keyboard.ArrowLeft == "pressed" ||
+      inputState.keyboard.a == "pressed"
+    ) {
+      player.moveNotch(LEFT);
+    }
+    if (
+      inputState.keyboard.ArrowUp == "pressed" ||
+      inputState.keyboard.w == "pressed"
+    ) {
+      player.moveNotch(UP);
+    }
+    if (
+      inputState.keyboard.ArrowDown == "pressed" ||
+      inputState.keyboard.s == "pressed"
+    ) {
+      player.moveNotch(DOWN);
+    }
+  }
 
   /**
    * Checks for actions with current input state and game state and handles them

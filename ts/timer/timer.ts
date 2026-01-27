@@ -67,8 +67,12 @@ export class Timer {
     return this.ticsRemaining / timeTracker.ticsPerSecond;
   }
 
-  get percentage() {
+  get percentageDecr() {
     return Math.max(0, (this.ticsRemaining / this.goalTics) * 100);
+  }
+
+  get percentageIncr() {
+    return 100 - this.percentageDecr;
   }
 
   get inMotion() {

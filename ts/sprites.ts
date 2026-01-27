@@ -25,6 +25,7 @@ export const sprites = {
   placeholder: new Sprite("placeholder"),
   bg_test: new Sprite("bg_test"),
   jess: new Sprite("jess"),
+  bruno: new Sprite("bruno"),
 };
 
 const spriteArr = Object.values(sprites);
