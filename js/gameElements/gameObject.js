@@ -1,0 +1,49 @@
+import Position from "./position.js";
+import { Sprite } from "../sprites.js";
+import Hitbox from "./hitbox.js";
+import timeTracker from "../timer/timeTracker.js";
+import { canvasManager } from "../canvasManager.js";
+import { TILESIZE } from "../global.js";
+export default class GameObject {
+    sprite;
+    hidden = false;
+    pos;
+    width;
+    height;
+    hitbox;
+    hitboxPosShift;
+    mouseHovering = false;
+    mouseHeldLeft = false;
+    mouseHeldRight = false;
+    firstAnimationTic;
+    constructor(args) {
+        this.sprite = args.sprite;
+        this.pos = args.pos ?? new Position();
+        this.width = args.width ?? TILESIZE;
+        this.height = args.height ?? TILESIZE;
+        this.hitboxPosShift = args.hitboxPosShift;
+        this.hitbox = new Hitbox({
+            objPos: this.pos,
+            width: args.hitboxWidth ?? this.width,
+            height: args.hitboxHeight ?? this.height,
+            shiftPos: args.hitboxPosShift,
+        });
+        this.firstAnimationTic = timeTracker.currentGameTic;
+    }
+    updatePosition(newPos) {
+        this.pos = newPos;
+        this.hitbox.objPos = this.pos.add(this.hitboxPosShift ?? new Position());
+    }
+    render() {
+        if (this.hidden) {
+            return;
+        }
+        canvasManager.renderSprite(this.sprite, this.pos, this.width, this.height);
+    }
+    resetAnimation() {
+        this.firstAnimationTic = timeTracker.currentGameTic;
+    }
+    endAnimation() {
+        this.firstAnimationTic = -Infinity;
+    }
+}
