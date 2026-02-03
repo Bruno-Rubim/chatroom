@@ -79,7 +79,7 @@ export default class Position {
     if (round) {
       return new Position(
         Math.floor(this.x / divisor),
-        Math.floor(this.y / divisor)
+        Math.floor(this.y / divisor),
       );
     }
     return new Position(this.x / divisor, this.y / divisor);

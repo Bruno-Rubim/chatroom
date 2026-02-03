@@ -16,3 +16,5 @@ export const DEV = localStorage.getItem("is_dev") == "true";
 // Run one of the next lines to turn dev settings on or off
 // localStorage.setItem("is_dev", "true");
 // localStorage.setItem("is_dev", "false");
+
+export const API = "http://localhost:8080";

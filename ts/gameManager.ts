@@ -1,11 +1,13 @@
 import { Action } from "./action.js";
 import { canvasManager } from "./canvasManager.js";
-import type GameObject from "./gameElements/gameObject.js";
 import { timerManager } from "./timer/timerManager.js";
 import { bindListeners, inputState } from "./input/inputState.js";
 import gameState from "./gameState.js";
-import player from "./player.js";
 import { DOWN, LEFT, RIGHT, UP } from "./global.js";
+import { localUser } from "./user.js";
+import { userList } from "./userList.js";
+import Player from "./player.js";
+import Position from "./gameElements/position.js";
 
 // Says if the cursor has changed or if there's an item description to show TO-DO: change this
 type actionResponse = "cursorChange" | "itemDescription" | void;
@@ -56,6 +58,10 @@ export default class GameManager {
    * @returns
    */
   handleKeyInput() {
+    const player = gameState.players.find((p) => p.id == localUser.id);
+    if (!player) {
+      return;
+    }
     if (
       inputState.keyboard.ArrowRight == "pressed" ||
       inputState.keyboard.d == "pressed"
@@ -82,13 +88,28 @@ export default class GameManager {
     }
   }
 
+  updatePlayers() {
+    userList.forEach((u) => {
+      const player = gameState.players.find((p) => p.id == u.id);
+      if (!player) {
+        gameState.players.push(new Player(u.id, new Position(u.pos)));
+        return;
+      }
+      if (u.id == localUser.id) {
+        return;
+      }
+      player.pos.update(u.pos);
+    });
+    const userIds = userList.map((u) => u.id);
+    gameState.players = gameState.players.filter((p) => userIds.includes(p.id));
+  }
+
   /**
    * Checks for actions with current input state and game state and handles them
    */
   updateGame() {
     this.checkTimers();
-
-    const gameObjects: GameObject[] = gameState.gameObjects;
+    this.updatePlayers();
 
     const actions: Action[] | void = [];
 
@@ -104,7 +125,8 @@ export default class GameManager {
 
   renderGame() {
     canvasManager.clearCanvas();
-    gameState.gameObjects.forEach((o) => {
+    const gameObjects = gameState.gameObjects.sort((a, b) => a.pos.y - b.pos.y);
+    gameObjects.forEach((o) => {
       o.render();
     });
   }

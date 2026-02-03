@@ -2,6 +2,7 @@ import { canvasManager } from "./canvasManager.js";
 import GameObject from "./gameElements/gameObject.js";
 import Position from "./gameElements/position.js";
 import { DOWN, LEFT, RIGHT, UP, type direction } from "./global.js";
+import { sendUpdate } from "./serverService.js";
 import { sprites } from "./sprites.js";
 import { Timer } from "./timer/timer.js";
 import timeTracker from "./timer/timeTracker.js";
@@ -19,24 +20,27 @@ type playerState = {
   timer: Timer | null;
 };
 
-class Player extends GameObject {
+export default class Player extends GameObject {
   state: playerState = { name: "idle", dir: RIGHT, timer: null };
   facing: typeof LEFT | typeof RIGHT = RIGHT;
   horMoveTime = 0.9;
   verMoveTime = this.horMoveTime / 2;
   ticStoppedMoving = 0;
+  id: number;
 
-  constructor() {
+  constructor(id: number, pos: Position) {
     super({
       sprite: sprites.bruno,
-      pos: new Position(16, 90),
+      pos: pos,
     });
+    this.id = id;
   }
 
   moveNotch(dir: direction) {
     if (this.state.name == "moving") {
       return;
     }
+    sendUpdate({ type: "movement", dir: dir });
     if (timeTracker.currentGameTic > this.ticStoppedMoving) {
       this.firstAnimationTic = timeTracker.currentGameTic;
     }
@@ -93,7 +97,6 @@ class Player extends GameObject {
       );
       return;
     }
-
     canvasManager.renderSpriteFromSheet(
       this.sprite,
       pos,
@@ -103,6 +106,3 @@ class Player extends GameObject {
     );
   }
 }
-
-const player = new Player();
-export default player;
