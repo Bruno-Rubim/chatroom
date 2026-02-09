@@ -92,13 +92,13 @@ export default class GameManager {
     userList.forEach((u) => {
       const player = gameState.players.find((p) => p.id == u.id);
       if (!player) {
-        gameState.players.push(new Player(u.id, new Position(u.pos)));
+        gameState.players.push(new Player(u.id, u.playerState));
         return;
       }
       if (u.id == localUser.id) {
         return;
       }
-      player.pos.update(u.pos);
+      player.updatePlayerState(u.playerState);
     });
     const userIds = userList.map((u) => u.id);
     gameState.players = gameState.players.filter((p) => userIds.includes(p.id));

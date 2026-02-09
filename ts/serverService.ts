@@ -27,17 +27,23 @@ export async function requestGameUpdate() {
     location.reload();
   }
   const serverUserList: User[] = await response.json();
+  const serverIdList = serverUserList.map((x) => x.id);
   serverUserList.forEach((u) => {
     if (u.id == localUser.id) {
       return;
     }
-    u.pos = new Position(u.pos.x, u.pos.y);
+    u.playerState.pos = new Position(u.playerState.pos.x, u.playerState.pos.y);
     const user = userList.find((x) => x.id == u.id);
     if (!user) {
       userList.push(u);
       return;
     }
-    user.pos.update(u.pos);
+    user.playerState = u.playerState;
+  });
+  userList.forEach((u, i) => {
+    if (!serverIdList.includes(u.id)) {
+      userList.splice(i, 1);
+    }
   });
 }
 

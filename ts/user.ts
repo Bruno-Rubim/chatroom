@@ -1,15 +1,23 @@
 import Position from "./gameElements/position.js";
 
+export type PlayerState = {
+  pos: Position;
+  facing: "left" | "right";
+};
+
 export type User = {
   id: number;
   logged: boolean;
-  pos: Position;
   lastPing: number;
+  playerState: PlayerState;
 };
 
 export const localUser: User = {
   id: Math.floor(Math.random() * 100000),
   logged: false,
-  pos: new Position(16, 90),
+  playerState: {
+    pos: new Position(16, 90),
+    facing: "right",
+  },
   lastPing: 0,
 };
